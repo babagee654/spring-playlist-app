@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: html-head"></head>
+<body>
+<header>
+<nav th:replace="fragments/header.html :: navbar"></nav>
+</header>
+<main class="main-container d-flex flex-column align-items-center">
+
+	<h1>Playlists by <span class="text-light" th:text="${user.getUsername}">User</span></h1>
+	
+	<div class="card-container d-flex align-items-center justify-content-center flex-wrap">
+		<div class="mb-5 card bg-dark text-light" th:each="playlist: ${playlists}">
+				<a th:href="@{|/viewPlaylists/${playlist.playlistId}|}">
+					<img class="card-image" th:src="@{|${playlist.thumbnailUrl}|}" th:alt="${playlist.playlistName}">
+				</a>
+	
+				<div class="card-body">
+					<h4 class="card-title" th:text="${playlist.playlistName}">Playlist Name</h4>
+					<div>
+						<a class="btn-custom"  th:href="@{|/viewPlaylists/${playlist.playlistId}|}">View</a>
+						<a class="btn-custom" th:if="${#authentication.getPrincipal().getUsername() == user.getUsername}" th:href="@{|/user/editPlaylist/${playlist.playlistId}|}">Edit</a>
+					</div>
+				</div>
+		</div>
+	</div>
+	
+	
+
+	<div th:if="${#authentication.getPrincipal().getUsername() == user.getUsername}">
+	<div>
+		<h2>Create a new Playlist</h2>
+		<div class="form-container bg-dark text-light">
+			<form action="#" method="POST" th:action="@{|/user/createPlaylist|}" th:object="${newPlaylist}">
+				<input type="text" th:value="${user.getUsername}" th:id="username" th:name="username" hidden>
+				<div class="d-flex flex-column">
+					<label for="playlistName">
+						Playlist Name:
+					</label>
+					<input type="text" th:value="*{playlistName}" th:field="*{playlistName}">
+				</div>
+				<br>
+				<div class="d-flex flex-column">
+					<label for="thumbnailUrl">
+						Playlist Thumbnail (Paste image address):
+					</label>
+					<input type="text" th:value="*{thumbnailUrl}" th:field="*{thumbnailUrl}">
+				</div>
+				<br>
+				<button class="btn-custom" type="submit">Submit</button>
+			</form>
+		</div>
+	</div>
+	</div>
+
+	
+
+</main>
+
+<script th:replace="fragments/header.html :: bootstrap"></script>
+</body>
+</html>

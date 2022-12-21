@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: html-head"></head>
+<body>
+<header>
+<nav th:replace="fragments/header.html :: navbar"></nav>
+</header>
+<main class="main-container d-flex flex-column align-items-center">
+
+<h1 class="mt-2 param">Error!</h1>
+
+<h2>You don't have access to this area.</h2>
+<br>
+<br>
+<h3>Login to an authenticated account <a class="custom-a" href="#" th:href="@{/login}">here</a>.</h3>
+
+
+</main>
+
+<script th:replace="fragments/header.html :: bootstrap"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: html-head"></head>
+<body>
+<header>
+<nav th:replace="fragments/header.html :: navbar"></nav>
+</header>
+<main class="main-container d-flex flex-column align-items-center">
+
+<h1>Admin Dashboard</h1>
+
+
+<h2>Manage Playlists</h2>
+<div th:unless="${playlists.size} > 0">
+	<h3>No Playlists Available</h3>
+</div>
+<div th:if="${playlists.size} > 0" class="card-container">
+	<div class="card bg-dark text-light" th:each="playlist: ${playlists}">
+		<a th:href="@{|/viewPlaylists/${playlist.playlistId}|}">
+			<img class="card-image" th:src="@{|${playlist.thumbnailUrl}|}" th:alt="${playlist.playlistName}">
+		</a>
+
+		<div class="card-body">
+			<h4 class="card-title" th:text="${playlist.playlistName}">Playlist Name</h4>
+			<h5 class="card-text">
+				<a class="custom-a" th:href="@{|/user/${playlist.username}|}" th:text="${playlist.username}">Owner</a>
+			</h5>
+			<div>
+				<a class="btn-custom" th:href="@{|/admin/deletePlaylist/${playlist.playlistId}|}">Delete</a>
+			</div>
+		</div>
+
+	</div>	
+</div>
+
+
+<div class="mt-2 d-flex flex-column">
+	<h2>Manage Songs</h2>
+	<a th:href="@{/admin/addSong}" class="btn btn-dark align-self-center">Add a new Song</a>
+</div>
+
+<div class="mt-2">
+	<h2>Manage Users</h2>
+	
+	<table class="table table-dark">
+		<tr>
+			<th>Username</th>
+			<th>Action</th>
+		</tr>
+		<tr th:each="user : ${users}">
+			<td th:text="|${user.username}|">Username</td>
+			<td><a class="btn-custom" th:href="@{|/admin/deleteUser/${user.username}|}">Delete</a></td>
+		</tr>
+	</table>
+
+</div>
+
+
+</main>
+
+<script th:replace="fragments/header.html :: bootstrap"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: html-head"></head>
+<body>
+<header>
+<nav th:replace="fragments/header.html :: navbar"></nav>
+</header>
+<main class="main-container d-flex flex-column align-items-center">
+
+
+<div th:unless="${#authentication.getPrincipal().getUsername() == playlist.getUsername}">
+	<h1>This is not your playlist!</h1>
+</div>
+
+<div th:if="${#authentication.getPrincipal().getUsername() == playlist.getUsername}">
+<div>
+	<h1>Edit Playlist Name</h1>
+	<div class="form-container bg-dark text-light">
+		<form action="#" method="POST" th:action="@{/user/editPlaylist}" th:object="${playlist}">
+			<input type="text" th:value="*{playlistId}" th:field="*{playlistId}" hidden>
+			<input type="text" th:value="*{username}" th:field="*{username}" hidden>
+			<div class="d-flex flex-column">
+				<label for="playlistName">
+					Playlist Name:
+				</label>
+				<input type="text" th:value="*{playlistName}" th:field="*{playlistName}">
+			</div>
+			<div class="d-flex flex-column">
+				<label for="thumbnailUrl">
+					Playlist Thumbnail:
+				</label>
+				<input type="text" th:value="*{thumbnailUrl}" th:field="*{thumbnailUrl}">
+			</div>
+			<div class="d-flex flex-column">
+				<label for="addSong">
+					Add Song to Playlist: 
+				</label>
+				<select name="addSong">
+						<option value="none">---Don't Add---</option>
+						<option th:each="song : ${songsList}" th:value="${song.songId}" th:text="|${song.songName} - ${song.artistName}|">Song Name - Artist Name</option>
+				</select>
+			</div>
+			<div class="mt-2">
+				<button class="btn-custom" type="submit">Submit</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<h2>Songs in <span th:text="${playlist.playlistName}">Playlist Name</span></h2>
+	
+	<div class="form-container bg-dark">
+		<p class="text-light" th:unless="${playlistSongs.size} > 0">This playlist has no songs.</p>
+			<ul th:if="${playlistSongs.size} > 0" class="card-ul">
+				<li class="w-100 my-3 d-flex" th:each="song, iterStat: ${playlistSongs}">
+					<a class="custom-a" th:href="@{|/viewPlaylists/${playlist.playlistId}/${iterStat.index + 1}|}" 
+					th:text="|${iterStat.index}. ${song.songName} - ${song.artistName}|">#. song name - artist
+					</a>
+					<a class="btn-custom ms-auto" th:href="@{|/user/deleteSong/${playlist.playlistId}/${song.songId}|}"
+					>Delete</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+</div>
+</div>
+</main>
+
+<script th:replace="fragments/header.html :: bootstrap"></script>
+</body>
+</html>

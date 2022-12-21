@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: html-head"></head>
+<body>
+<header>
+<nav th:replace="fragments/header.html :: navbar"></nav>
+</header>
+<main class="main-container d-flex flex-column align-items-center">
+
+<h1>Add a new Song</h1>
+<div class="form-container bg-dark text-light">
+	<form action="#" method="POST" th:action="@{/admin/addSong}" th:object="${newSong}">
+	
+		<div class="d-flex flex-column">
+			<label for="songName">
+				Song Name:
+			</label>
+			<input type="text" th:value="*{songName}" th:field="*{songName}">
+		</div>
+		<div class="d-flex flex-column">
+			<label for="songUrl">
+				Song Url: <span class="warning">(ex: https://www.youtube.com/watch?v=toBTPGfurLc)</span>
+			</label>
+			<input type="text" th:value="*{songUrl}" th:field="*{songUrl}">
+		</div>
+		<div class="d-flex flex-column">
+			<label for="artistName">
+				Artist Name:
+			</label>
+				<input type="text" th:value="*{artistName}" th:field="*{artistName}">
+		</div>
+		<div class="mt-2">
+			<button class="btn-custom" type="submit">Submit</button>
+		</div>
+	</form>
+</div>
+
+
+<h1>Search for Song</h1>
+<div class="form-container bg-dark text-light">
+	<form action="#" method="GET" th:action="@{/admin/searchSongs}">
+		<div class="d-flex flex-column">
+			<label for="query">
+				Search:
+			</label>
+			<input type="text" name="searchString" id="searchString" required>
+		</div>
+		<div class="mt-2">
+			<button class="btn-custom" type="submit">Submit</button>
+		</div>
+	</form>
+</div>
+
+
+</main>
+
+<script th:replace="fragments/header.html :: bootstrap"></script>
+</body>
+</html>
